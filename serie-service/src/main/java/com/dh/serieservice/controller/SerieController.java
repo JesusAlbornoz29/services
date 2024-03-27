@@ -1,6 +1,7 @@
 package com.dh.serieservice.controller;
 
 import com.dh.serieservice.model.Serie;
+import com.dh.serieservice.queue.SerieSender;
 import com.dh.serieservice.service.SerieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +19,13 @@ public class SerieController {
 
     private final SerieService serieService;
 
+    private final SerieSender senderSerie;
+
     private static java.util.logging.Logger log = Logger.getLogger(SerieController.class.getName());
 
-    public SerieController(SerieService serieService) {
+    public SerieController(SerieService serieService, SerieSender senderSerie) {
         this.serieService = serieService;
+        this.senderSerie = senderSerie;
     }
 
     @GetMapping
@@ -41,6 +45,7 @@ public class SerieController {
     public String create(@RequestBody Serie serie) {
         log.info("Se guardo la serie correctamente");
         serieService.create(serie);
+        senderSerie.send(serie);
         return serie.getId();
     }
 }
