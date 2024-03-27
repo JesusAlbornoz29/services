@@ -5,5 +5,6 @@ Esta clase se crea para poder obtener los datos traidos desde el el microservici
 
 package com.dh.catalogservice.model;
 
+
 public record Movie (Long id, String name, String genre, String urlStream){
 }
